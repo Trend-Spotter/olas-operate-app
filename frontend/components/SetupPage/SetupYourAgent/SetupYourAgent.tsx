@@ -11,6 +11,7 @@ import { LOCAL_FORM_THEME } from '@/theme';
 
 import { SetupCreateHeader } from '../Create/SetupCreateHeader';
 import { AgentsFunAgentSetup } from './AgentsFunAgentSetup';
+import { MindshareAgentForm } from './MindshareAgentForm/MindshareAgentForm';
 import { ModiusAgentForm } from './ModiusAgentForm/ModiusAgentForm';
 import { OptimusAgentForm } from './OptimusAgentForm/OptimusAgentForm';
 
@@ -38,11 +39,14 @@ export const SetupYourAgent = () => {
       <CardFlex gap={10} styles={{ body: { padding: '12px 24px' } }} noBorder>
         <SetupCreateHeader prev={SetupScreen.AgentIntroduction} />
         <Title level={3} className="mb-0">
-          Set up your agent
+          {selectedAgentType === AgentType.Mindshare ? 'Set your portfolio' : 'Set up your agent'}
         </Title>
 
         {selectedAgentType === AgentType.AgentsFun && (
           <AgentsFunAgentSetup serviceTemplate={serviceTemplate} />
+        )}
+        {selectedAgentType === AgentType.Mindshare && (
+          <MindshareAgentForm serviceTemplate={serviceTemplate} />
         )}
         {selectedAgentType === AgentType.Modius && (
           <ModiusAgentForm serviceTemplate={serviceTemplate} />

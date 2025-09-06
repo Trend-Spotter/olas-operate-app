@@ -83,6 +83,19 @@ const FEATURES_CONFIG = FeaturesConfigSchema.parse({
     'bridge-add-funds': true,
     'on-ramp': true,
   },
+  [AgentType.Mindshare]: {
+    'manage-wallet': false, // Disabled for boilerplate
+    'withdraw-funds': false, // Disabled for boilerplate
+    'last-transactions': false, // Disabled for boilerplate
+    'rewards-streak': false, // Disabled for boilerplate
+    'staking-contract-section': false, // Disabled for boilerplate
+    'agent-activity': false, // Disabled for boilerplate
+    'backup-via-safe': false, // Disabled for boilerplate
+    'agent-settings': false, // Disabled for boilerplate
+    'bridge-onboarding': false, // Disabled for boilerplate
+    'bridge-add-funds': false, // Disabled for boilerplate
+    'on-ramp': false, // Disabled for boilerplate
+  },
 });
 
 type FeatureFlagReturn<T extends FeatureFlags | FeatureFlags[]> =

@@ -74,3 +74,16 @@ export const OPTIMUS_ONBOARDING_STEPS: OnboardingStep[] = [
   //   imgSrc: 'setup-agent-optimus-3',
   // },
 ] as const;
+
+export const MINDSHARE_ONBOARDING_STEPS: OnboardingStep[] = [
+  {
+    title: 'Mindshare Agent',
+    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum turpis varius tortor ornare pellentesque.',
+    imgSrc: 'setup-agent-mindshare-1',
+  },
+  {
+    title: 'Get started with Mindshare',
+    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum turpis varius tortor ornare pellentesque.',
+    imgSrc: 'setup-agent-mindshare-1',
+  },
+] as const;

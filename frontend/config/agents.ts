@@ -12,6 +12,7 @@ import { AgentsFunBaseService } from '@/service/agents/AgentsFunBase';
 import { ModiusService } from '@/service/agents/Modius';
 import { OptimismService } from '@/service/agents/Optimism';
 import { PredictTraderService } from '@/service/agents/PredictTrader';
+import { MindshareService } from '@/service/agents/Mindshare';
 import { Address } from '@/types/Address';
 import { AgentConfig } from '@/types/Agent';
 
@@ -104,6 +105,19 @@ export const AGENT_CONFIG: {
     displayName: 'Agents.fun agent - Base',
     description:
       'Autonomously posts to Twitter, creates and trades memecoins, and interacts with other agents. Agent is operating on Base chain.',
+    hasExternalFunds: false,
+  },
+  [AgentType.Mindshare]: {
+    isAgentEnabled: true,
+    requiresSetup: true,
+    name: 'Mindshare agent',
+    evmHomeChainId: EvmChainId.Gnosis,
+    middlewareHomeChainId: MiddlewareChain.GNOSIS,
+    requiresAgentSafesOn: [EvmChainId.Gnosis],
+    requiresMasterSafesOn: [EvmChainId.Gnosis],
+    serviceApi: MindshareService,
+    displayName: 'Mindshare agent',
+    description: 'Trading agent that uses Mindshare social data from Telegram',
     hasExternalFunds: false,
   },
 };

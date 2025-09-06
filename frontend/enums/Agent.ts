@@ -3,6 +3,7 @@ export const AgentType = {
   AgentsFun: 'memeooorr',
   Modius: 'modius',
   Optimus: 'optimus',
+  Mindshare: 'mindshare',
 } as const;
 
 export type AgentType = (typeof AgentType)[keyof typeof AgentType];

@@ -2,6 +2,7 @@ import { SupportedMiddlewareChain } from '@/client';
 import { EvmChainId } from '@/enums/Chain';
 import { TokenSymbol } from '@/enums/Token';
 import { AgentsFunBaseService } from '@/service/agents/AgentsFunBase';
+import { MindshareService } from '@/service/agents/Mindshare';
 import { ModiusService } from '@/service/agents/Modius';
 import { OptimismService } from '@/service/agents/Optimism';
 import { PredictTraderService } from '@/service/agents/PredictTrader';
@@ -17,6 +18,7 @@ export type AgentConfig = {
   >;
   serviceApi:
     | typeof PredictTraderService
+    | typeof MindshareService
     | typeof ModiusService
     | typeof OptimismService
     | typeof AgentsFunBaseService;
