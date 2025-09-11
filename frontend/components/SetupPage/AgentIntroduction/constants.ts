@@ -78,12 +78,12 @@ export const OPTIMUS_ONBOARDING_STEPS: OnboardingStep[] = [
 export const MINDSHARE_ONBOARDING_STEPS: OnboardingStep[] = [
   {
     title: 'Mindshare Agent',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum turpis varius tortor ornare pellentesque.',
+    desc: 'TrendMoon is a social intelligence platform turning crypto chatter into real-time insights. It aggregates data from 20,000+ Telegram groups, Twitter, Reddit, and more to spot trends, rank mindshare, and track narratives. Powered by an API, it fuels dashboards, alerts, and automated trading.',
     imgSrc: 'setup-agent-mindshare-1',
   },
   {
     title: 'Get started with Mindshare',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum turpis varius tortor ornare pellentesque.',
-    imgSrc: 'setup-agent-mindshare-1',
+    desc: 'Unlock crypto edges with the Mindshare agent, fueled by TrendMoons social data. Query trends or sentiments naturally to spot opportunities first—turn chatter into wins! Dive in and supercharge your trades now.',
+    imgSrc: 'setup-agent-mindshare-2',
   },
 ] as const;
