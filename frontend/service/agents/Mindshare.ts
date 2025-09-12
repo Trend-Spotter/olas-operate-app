@@ -24,7 +24,7 @@ export abstract class MindshareService extends StakedAgentService {
     agentMultisigAddress,
     serviceId,
     stakingProgramId,
-    chainId = EvmChainId.Gnosis,
+    chainId = EvmChainId.Base,
   }: {
     agentMultisigAddress: Address;
     serviceId: number;
@@ -110,7 +110,7 @@ export abstract class MindshareService extends StakedAgentService {
 
   static getAvailableRewardsForEpoch = async (
     stakingProgramId: StakingProgramId,
-    chainId: EvmChainId = EvmChainId.Gnosis,
+    chainId: EvmChainId = EvmChainId.Base,
   ): Promise<bigint | undefined> => {
     const stakingTokenProxy =
       STAKING_PROGRAMS[chainId][stakingProgramId]?.contract;
@@ -142,7 +142,7 @@ export abstract class MindshareService extends StakedAgentService {
   static getServiceStakingDetails = async (
     serviceNftTokenId: number,
     stakingProgramId: StakingProgramId,
-    chainId: EvmChainId = EvmChainId.Gnosis,
+    chainId: EvmChainId = EvmChainId.Base,
   ): Promise<ServiceStakingDetails> => {
     const { multicallProvider } = PROVIDERS[chainId];
 

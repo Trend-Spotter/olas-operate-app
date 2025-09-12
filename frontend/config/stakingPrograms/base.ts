@@ -34,7 +34,7 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
     deprecated: true,
     chainId: EvmChainId.Base,
     name: 'MemeBase Alpha II',
-    agentsSupported: [AgentType.AgentsFun],
+    agentsSupported: [AgentType.AgentsFun, AgentType.Mindshare],
     stakingRequirements: {
       [TokenSymbol.OLAS]: 100,
     },
@@ -107,7 +107,7 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
   [STAKING_PROGRAM_IDS.AgentsFun1]: {
     chainId: EvmChainId.Base,
     name: 'Agents.fun 1',
-    agentsSupported: [AgentType.AgentsFun],
+    agentsSupported: [AgentType.AgentsFun, AgentType.Mindshare],
     stakingRequirements: {
       [TokenSymbol.OLAS]: 100,
     },
@@ -123,7 +123,7 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
   [STAKING_PROGRAM_IDS.AgentsFun2]: {
     chainId: EvmChainId.Base,
     name: 'Agents.fun 2',
-    agentsSupported: [AgentType.AgentsFun],
+    agentsSupported: [AgentType.AgentsFun, AgentType.Mindshare],
     stakingRequirements: {
       [TokenSymbol.OLAS]: 1000,
     },
@@ -139,7 +139,7 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
   [STAKING_PROGRAM_IDS.AgentsFun3]: {
     chainId: EvmChainId.Base,
     name: 'Agents.fun 3',
-    agentsSupported: [AgentType.AgentsFun],
+    agentsSupported: [AgentType.AgentsFun, AgentType.Mindshare],
     stakingRequirements: {
       [TokenSymbol.OLAS]: 5000,
     },

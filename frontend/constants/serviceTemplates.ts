@@ -590,10 +590,10 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
   description: `${KPI_DESC_PREFIX} Mindshare agent for social data trading`,
   image: 'https://operate.olas.network/_next/image?url=%2Fimages%2Fprediction-agent.png&w=3840&q=75',
   service_version: 'v0.1.0',
-  home_chain: MiddlewareChain.GNOSIS,
+  home_chain: MiddlewareChain.BASE,
   configurations: {
-    [MiddlewareChain.GNOSIS]: {
-      staking_program_id: STAKING_PROGRAM_IDS.PearlBeta,
+    [MiddlewareChain.BASE]: {
+      staking_program_id: STAKING_PROGRAM_IDS.AgentsFun1,
       nft: 'bafybeig64atqaladigoc3ds4arltdu63wkdrk3gesjfvnfdmz35amv7faq',
       rpc: 'http://localhost:8545',
       agent_id: 14, // placeholder
@@ -608,7 +608,25 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
     },
   },
   env_variables: {
-    // Placeholder environment variables - can be customized later
+    BASE_LEDGER_RPC: {
+      name: 'Base ledger RPC',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    STAKING_TOKEN_CONTRACT_ADDRESS: {
+      name: 'Staking token contract address',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    ACTIVITY_CHECKER_CONTRACT_ADDRESS: {
+      name: 'Staking activity checker contract address',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    // Mindshare-specific environment variables
     STAKING_AMOUNT: {
       name: 'Staking Amount',
       description: 'Amount to stake',
@@ -632,6 +650,24 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
       description: 'Risk tolerance level',
       value: '',
       provision_type: EnvProvisionType.USER,
+    },
+    STORE_PATH: {
+      name: 'Store path',
+      description: '',
+      value: 'persistent_data/',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    LOG_DIR: {
+      name: 'Log directory',
+      description: '',
+      value: 'benchmarks/',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    RESET_PAUSE_DURATION: {
+      name: 'Reset pause duration',
+      description: '',
+      value: '300',
+      provision_type: EnvProvisionType.FIXED,
     },
   },
 } as const;
