@@ -226,6 +226,14 @@ export const AgentProfile = ({ renderContainer }: AgentProfileProps) => {
       return <BabyDegenUi {...commonProps} />;
     }
 
+    // base - mindshare (COMMENTED OUT FOR TESTING)
+    if (
+      middlewareChain === MiddlewareChain.BASE &&
+      selectedAgentType === AgentType.Mindshare
+    ) {
+      return <AgentProfileButton {...commonProps} />;
+    }
+
     return null;
   }, [serviceSafe, middlewareChain, selectedAgentType, commonProps]);
 

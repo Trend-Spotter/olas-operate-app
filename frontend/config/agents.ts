@@ -9,6 +9,7 @@ import { AgentType } from '@/enums/Agent';
 import { EvmChainId } from '@/enums/Chain';
 import { TokenSymbol } from '@/enums/Token';
 import { AgentsFunBaseService } from '@/service/agents/AgentsFunBase';
+import { MindshareService } from '@/service/agents/Mindshare';
 import { ModiusService } from '@/service/agents/Modius';
 import { OptimismService } from '@/service/agents/Optimism';
 import { PredictTraderService } from '@/service/agents/PredictTrader';
@@ -104,6 +105,19 @@ export const AGENT_CONFIG: {
     displayName: 'Agents.fun agent - Base',
     description:
       'Autonomously posts to Twitter, creates and trades memecoins, and interacts with other agents. Agent is operating on Base chain.',
+    hasExternalFunds: false,
+  },
+  [AgentType.Mindshare]: { // COMMENTED OUT FOR TESTING
+    isAgentEnabled: true,
+    requiresSetup: true,
+    name: 'Mindshare agent',
+    evmHomeChainId: EvmChainId.Base,
+    middlewareHomeChainId: MiddlewareChain.BASE,
+    requiresAgentSafesOn: [EvmChainId.Base],
+    requiresMasterSafesOn: [EvmChainId.Base],
+    serviceApi: MindshareService,
+    displayName: 'Mindshare agent',
+    description: 'Trading agent that uses Mindshare social data from Telegram',
     hasExternalFunds: false,
   },
 };

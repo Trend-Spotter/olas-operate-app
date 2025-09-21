@@ -74,3 +74,16 @@ export const OPTIMUS_ONBOARDING_STEPS: OnboardingStep[] = [
   //   imgSrc: 'setup-agent-optimus-3',
   // },
 ] as const;
+
+export const MINDSHARE_ONBOARDING_STEPS: OnboardingStep[] = [
+  {
+    title: 'Mindshare Agent',
+    desc: 'Welcome to the Mindshare social agent! The Mindshare agent leverages Trendmoon’s spectacular social information to obtain a cutting-edge advantage by aggregating data from 20,000+ Telegram groups alongside Twitter, Reddit, and other platforms. TrendMoon tracks where attention is building to identify emerging trends, rank project mindshare, and surfacing narrative momentum.',
+    imgSrc: 'setup-agent-mindshare-1',
+  },
+  {
+    title: 'Get started with Mindshare',
+    desc: 'Unlock crypto edges with the Mindshare agent. Take advantage of Trendmoon to naturally spot opportunities first. Turn chatter into wins! Dive in and supercharge your trades now.',
+    imgSrc: 'setup-agent-mindshare-2',
+  },
+] as const;

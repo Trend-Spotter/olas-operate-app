@@ -10,6 +10,7 @@ import { useSharedContext } from '@/hooks/useSharedContext';
 
 import {
   AGENTS_FUND_ONBOARDING_STEPS,
+  MINDSHARE_ONBOARDING_STEPS, 
   MODIUS_ONBOARDING_STEPS,
   OPTIMUS_ONBOARDING_STEPS,
   PREDICTION_ONBOARDING_STEPS,
@@ -86,6 +87,7 @@ export const AgentIntroduction = () => {
     if (selectedAgentType === 'memeooorr') return AGENTS_FUND_ONBOARDING_STEPS;
     if (selectedAgentType === 'modius') return MODIUS_ONBOARDING_STEPS;
     if (selectedAgentType === 'optimus') return OPTIMUS_ONBOARDING_STEPS;
+    if (selectedAgentType === 'mindshare') return MINDSHARE_ONBOARDING_STEPS;
 
     throw new Error('Invalid agent type');
   }, [selectedAgentType]);

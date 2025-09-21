@@ -27,6 +27,7 @@ const schema = {
     },
   },
   optimus: { type: 'object', default: defaultInitialAgentSettings },
+  mindshare: { type: 'object', default: defaultInitialAgentSettings },
 };
 
 /**

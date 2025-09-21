@@ -612,11 +612,109 @@ export const OPTIMUS_SERVICE_TEMPLATE: ServiceTemplate = {
   ...BABYDEGEN_COMMON_TEMPLATE,
 } as const;
 
+export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
+  agentType: AgentType.Mindshare,
+  name: 'Mindshare Agent',
+  hash: 'bafybeifkomacg442ua3normikyv32bpaiikrz5qajhgxrnastzhbf3lwtm', // placeholder hash
+  description: `${KPI_DESC_PREFIX} Mindshare agent for social data trading`,
+  image: 'https://operate.olas.network/_next/image?url=%2Fimages%2Fprediction-agent.png&w=3840&q=75',
+  service_version: 'v0.1.0',
+  agent_release: {
+    is_aea: true,
+    repository: {
+      owner: 'trendmoon',
+      name: 'mindshare',
+      version: 'v0.0.1001',
+    },
+  },
+  home_chain: MiddlewareChain.BASE,
+  configurations: {
+    [MiddlewareChain.BASE]: {
+      staking_program_id: STAKING_PROGRAM_IDS.AgentsFun1,
+      nft: 'bafybeig64atqaladigoc3ds4arltdu63wkdrk3gesjfvnfdmz35amv7faq',
+      rpc: 'http://localhost:8545',
+      agent_id: 14, // placeholder
+      cost_of_bond: +parseEther(0.001),
+      monthly_gas_estimate: +parseEther(10),
+      fund_requirements: {
+        [ethers.constants.AddressZero]: {
+          agent: +parseEther(2),
+          safe: +parseEther(5),
+        },
+      },
+    },
+  },
+  env_variables: {
+    BASE_LEDGER_RPC: {
+      name: 'Base ledger RPC',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    STAKING_TOKEN_CONTRACT_ADDRESS: {
+      name: 'Staking token contract address',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    ACTIVITY_CHECKER_CONTRACT_ADDRESS: {
+      name: 'Staking activity checker contract address',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    // Mindshare-specific environment variables
+    STAKING_AMOUNT: {
+      name: 'Staking Amount',
+      description: 'Amount to stake',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    INITIAL_DEPOSIT: {
+      name: 'Initial Deposit',
+      description: 'Initial deposit amount',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    NATIVE_TXN_FEES: {
+      name: 'Native Transaction Fees',
+      description: 'Native transaction fees allocation',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    RISK_LEVEL: {
+      name: 'Risk Level',
+      description: 'Risk tolerance level',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    STORE_PATH: {
+      name: 'Store path',
+      description: '',
+      value: 'persistent_data/',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    LOG_DIR: {
+      name: 'Log directory',
+      description: '',
+      value: 'benchmarks/',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    RESET_PAUSE_DURATION: {
+      name: 'Reset pause duration',
+      description: '',
+      value: '300',
+      provision_type: EnvProvisionType.FIXED,
+    },
+  },
+} as const;
+
 export const SERVICE_TEMPLATES: ServiceTemplate[] = [
   PREDICT_SERVICE_TEMPLATE,
   AGENTS_FUN_BASE_TEMPLATE,
   MODIUS_SERVICE_TEMPLATE,
   OPTIMUS_SERVICE_TEMPLATE,
+  MINDSHARE_SERVICE_TEMPLATE,
 ] as const;
 
 export const getServiceTemplates = (): ServiceTemplate[] => SERVICE_TEMPLATES;
