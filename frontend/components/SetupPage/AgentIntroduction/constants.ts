@@ -83,7 +83,7 @@ export const MINDSHARE_ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     title: 'Get started with Mindshare',
-    desc: 'Unlock crypto edges with the Mindshare agent. Take advantage of Trendmoon to naturally spot opportunities first. Turn chatter into wins! Dive in and supercharge your trades now.',
+    desc: 'Unlock your crypto edge with the Mindshare Agent. Follow where attention is shifting to naturally spot opportunities early, and let TrendMoon turn mindshare into clear trading signals.',
     imgSrc: 'setup-agent-mindshare-2',
   },
 ] as const;

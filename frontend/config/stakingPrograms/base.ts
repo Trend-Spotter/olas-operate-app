@@ -27,6 +27,8 @@ export const BASE_STAKING_PROGRAMS_CONTRACT_ADDRESSES: Record<string, Address> =
       '0x26FA75ef9Ccaa60E58260226A71e9d07564C01bF',
     [STAKING_PROGRAM_IDS.AgentsFun3]:
       '0x4D4233EBF0473Ca8f34d105A6256A2389176F0Ce',
+    [STAKING_PROGRAM_IDS.Mindshare]:
+      '0x8b8a86A056D3145Ec2ecc30FB52C3aF2e6daB7C5',
   };
 
 export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
@@ -149,6 +151,20 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
       BASE_STAKING_PROGRAMS_ACTIVITY_CHECKERS[STAKING_PROGRAM_IDS.AgentsFun3],
     contract: new MulticallContract(
       BASE_STAKING_PROGRAMS_CONTRACT_ADDRESSES[STAKING_PROGRAM_IDS.AgentsFun3],
+      STAKING_TOKEN_PROXY_ABI,
+    ),
+  },
+  [STAKING_PROGRAM_IDS.Mindshare]: {
+    chainId: EvmChainId.Base,
+    name: 'Mindshare',
+    agentsSupported: [AgentType.Mindshare],
+    stakingRequirements: {
+      [TokenSymbol.OLAS]: 100,
+    },
+    activityChecker:
+      BASE_STAKING_PROGRAMS_ACTIVITY_CHECKERS[STAKING_PROGRAM_IDS.Mindshare],
+    contract: new MulticallContract(
+      BASE_STAKING_PROGRAMS_CONTRACT_ADDRESSES[STAKING_PROGRAM_IDS.Mindshare],
       STAKING_TOKEN_PROXY_ABI,
     ),
   },

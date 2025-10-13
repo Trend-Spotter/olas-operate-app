@@ -20,6 +20,7 @@ const BASE_STAKING_PROGRAM_IDS = {
   AgentsFun1: 'agents_fun_1',
   AgentsFun2: 'agents_fun_2',
   AgentsFun3: 'agents_fun_3',
+  Mindshare: 'mindshare',
 } as const;
 
 const MODE_STAKING_PROGRAM_IDS = {
