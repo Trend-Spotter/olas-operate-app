@@ -20,8 +20,8 @@ const { Option } = Select;
 
 const SetupHeader = () => (
   <Text>
-    Set up your Mindshare agent portfolio configuration. Configure your staking preferences, 
-    initial deposit amounts, transaction fee allocation, and risk tolerance level.
+    Set up your Mindshare agent configuration. Configure your API keys for Etherscan, 
+    CoinGecko, and Trendmoon services, and set your risk tolerance level.
   </Text>
 );
 
@@ -45,11 +45,11 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
     async (values: MindshareFieldValues) => {
       try {
         setIsSubmitting(true);
-        updateSubmitButtonText('Setting up portfolio...');
+        updateSubmitButtonText('Setting up agent...');
 
         // Simple validation - just check that all fields have values
-        if (!values.staking?.trim() || !values.initialDeposit?.trim() || 
-            !values.nativeTxnFees?.trim() || !values.riskLevel) {
+        if (!values.etherscanApiKey?.trim() || !values.coingeckoApiKey?.trim() || 
+            !values.trendmoonApiKey?.trim() || !values.riskLevel) {
           message.error('Please fill in all fields');
           return;
         }
@@ -57,7 +57,7 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
         // Brief delay for UX (simulating setup process)
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        message.success('Portfolio configuration saved');
+        message.success('Agent configuration saved');
         
         // For Mindshare boilerplate, go directly to the main page
         gotoPage(Pages.Main);
@@ -94,27 +94,27 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
         }}
       >
         <Form.Item
-          name="staking"
-          label="Staking"
-          rules={[{ required: true, message: 'Please enter staking amount' }]}
+          name="etherscanApiKey"
+          label="Etherscan API Key"
+          rules={[{ required: true, message: 'Please enter Etherscan API key' }]}
         >
-          <Input placeholder="OLAS" />
+          <Input placeholder="Enter Etherscan API key" />
         </Form.Item>
 
         <Form.Item
-          name="initialDeposit"
-          label="Initial Deposit"
-          rules={[{ required: true, message: 'Please enter initial deposit amount' }]}
+          name="coingeckoApiKey"
+          label="CoinGecko API Key"
+          rules={[{ required: true, message: 'Please enter CoinGecko API key' }]}
         >
-          <Input placeholder="USDC" />
+          <Input placeholder="Enter CoinGecko API key" />
         </Form.Item>
 
         <Form.Item
-          name="nativeTxnFees"
-          label="Native Txn Fees"
-          rules={[{ required: true, message: 'Please enter native transaction fees amount' }]}
+          name="trendmoonApiKey"
+          label="Trendmoon API Key"
+          rules={[{ required: true, message: 'Please enter Trendmoon API key' }]}
         >
-          <Input placeholder="ETH" />
+          <Input placeholder="Enter Trendmoon API key" />
         </Form.Item>
 
         <Form.Item

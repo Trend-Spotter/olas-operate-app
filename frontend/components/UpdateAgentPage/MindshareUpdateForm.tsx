@@ -14,16 +14,16 @@ const { Text } = Typography;
 const { Option } = Select;
 
 type MindshareFieldValues = {
-  staking: string;
-  initialDeposit: string;
-  nativeTxnFees: string;
+  etherscanApiKey: string;
+  coingeckoApiKey: string;
+  trendmoonApiKey: string;
   riskLevel: 'balanced' | 'conservative' | 'high';
 };
 
 const FormHeader = () => (
   <Text>
-    Update your Mindshare agent portfolio configuration. Modify your staking preferences, 
-    initial deposit amounts, transaction fee allocation, and risk tolerance level.
+    Update your Mindshare agent configuration. Configure your API keys for Etherscan, 
+    CoinGecko, and Trendmoon services, and set your risk tolerance level.
   </Text>
 );
 
@@ -63,27 +63,27 @@ const MindshareUpdateForm = ({
         style={{ marginTop: 16 }}
       >
         <Form.Item
-          name="staking"
-          label="Staking"
-          rules={[{ required: true, message: 'Please enter staking amount' }]}
+          name="etherscanApiKey"
+          label="Etherscan API Key"
+          rules={[{ required: true, message: 'Please enter Etherscan API key' }]}
         >
-          <Input placeholder="OLAS" />
+          <Input placeholder="Enter Etherscan API key" />
         </Form.Item>
 
         <Form.Item
-          name="initialDeposit"
-          label="Initial Deposit"
-          rules={[{ required: true, message: 'Please enter initial deposit amount' }]}
+          name="coingeckoApiKey"
+          label="CoinGecko API Key"
+          rules={[{ required: true, message: 'Please enter CoinGecko API key' }]}
         >
-          <Input placeholder="USDC" />
+          <Input placeholder="Enter CoinGecko API key" />
         </Form.Item>
 
         <Form.Item
-          name="nativeTxnFees"
-          label="Native Txn Fees"
-          rules={[{ required: true, message: 'Please enter native transaction fees amount' }]}
+          name="trendmoonApiKey"
+          label="Trendmoon API Key"
+          rules={[{ required: true, message: 'Please enter Trendmoon API key' }]}
         >
-          <Input placeholder="ETH" />
+          <Input placeholder="Enter Trendmoon API key" />
         </Form.Item>
 
         <Form.Item
@@ -130,12 +130,12 @@ export const MindshareUpdatePage = () => {
 
     return envEntries.reduce(
       (acc, [key, { value }]) => {
-        if (key === 'STAKING_AMOUNT') {
-          acc.staking = value;
-        } else if (key === 'INITIAL_DEPOSIT') {
-          acc.initialDeposit = value;
-        } else if (key === 'NATIVE_TXN_FEES') {
-          acc.nativeTxnFees = value;
+        if (key === 'ETHERSCAN_API_KEY') {
+          acc.etherscanApiKey = value;
+        } else if (key === 'COINGECKO_API_KEY') {
+          acc.coingeckoApiKey = value;
+        } else if (key === 'TRENDMOON_API_KEY') {
+          acc.trendmoonApiKey = value;
         } else if (key === 'RISK_LEVEL') {
           acc.riskLevel = value as 'balanced' | 'conservative' | 'high';
         }

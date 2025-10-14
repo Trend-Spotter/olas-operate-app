@@ -1,37 +1,67 @@
 import { useCallback, useState } from 'react';
 
+export type ValidationStatus = 'valid' | 'invalid' | 'unknown';
+
 export type MindshareFieldValues = {
-  staking: string;
-  initialDeposit: string;
-  nativeTxnFees: string;
+  etherscanApiKey: string;
+  coingeckoApiKey: string;
+  trendmoonApiKey: string;
   riskLevel: 'balanced' | 'conservative' | 'high';
 };
 
-export const useMindshareFormValidate = (defaultSubmitButtonText = 'Next') => {
+/**
+ * Simple validation to check that an API key has been provided
+ */
+const validateApiKey = (apiKey: string): boolean => {
+  if (!apiKey || !apiKey.trim()) return false;
+  
+  // Basic format validation - API keys are typically alphanumeric with some special chars
+  // Most API keys are at least 10 characters long
+  return apiKey.trim().length >= 10;
+};
+
+export const useMindshareFormValidate = (
+  defaultSubmitButtonText = 'Continue',
+) => {
   const [isValidating, setIsValidating] = useState(false);
   const [submitButtonText, setSubmitButtonText] = useState(
     defaultSubmitButtonText,
   );
+  const [etherscanApiKeyValidationStatus, setEtherscanApiKeyValidationStatus] =
+    useState<ValidationStatus>('unknown');
+  const [coinGeckoApiKeyValidationStatus, setCoinGeckoApiKeyValidationStatus] =
+    useState<ValidationStatus>('unknown');
+  const [trendmoonApiKeyValidationStatus, setTrendmoonApiKeyValidationStatus] =
+    useState<ValidationStatus>('unknown');
 
   const handleValidate = useCallback(async (values: MindshareFieldValues) => {
     setIsValidating(true);
+
+    setEtherscanApiKeyValidationStatus('unknown');
+    setCoinGeckoApiKeyValidationStatus('unknown');
+    setTrendmoonApiKeyValidationStatus('unknown');
     setSubmitButtonText('Validating...');
 
     try {
-      // Simple boilerplate validation - just check that fields are not empty
-      if (!values.staking?.trim() || !values.initialDeposit?.trim() || 
-          !values.nativeTxnFees?.trim() || !values.riskLevel) {
-        return false;
-      }
+      // Simple validation - just check that API keys are provided and have reasonable length
+      const isEtherscanApiValid = validateApiKey(values.etherscanApiKey);
+      setEtherscanApiKeyValidationStatus(isEtherscanApiValid ? 'valid' : 'invalid');
+      if (!isEtherscanApiValid) return false;
 
-      // For boilerplate, we don't need complex validation
+      const isCoinGeckoApiValid = validateApiKey(values.coingeckoApiKey);
+      setCoinGeckoApiKeyValidationStatus(isCoinGeckoApiValid ? 'valid' : 'invalid');
+      if (!isCoinGeckoApiValid) return false;
+
+      const isTrendmoonApiValid = validateApiKey(values.trendmoonApiKey);
+      setTrendmoonApiKeyValidationStatus(isTrendmoonApiValid ? 'valid' : 'invalid');
+      if (!isTrendmoonApiValid) return false;
+
       return true;
     } catch (error) {
       console.error('Error validating mindshare form:', error);
       return false;
     } finally {
       setIsValidating(false);
-      setSubmitButtonText('Next');
     }
   }, []);
 
@@ -41,6 +71,9 @@ export const useMindshareFormValidate = (defaultSubmitButtonText = 'Next') => {
 
   return {
     isValidating,
+    etherscanApiKeyValidationStatus,
+    coinGeckoApiKeyValidationStatus,
+    trendmoonApiKeyValidationStatus,
     submitButtonText,
     updateSubmitButtonText,
     validateForm: handleValidate,

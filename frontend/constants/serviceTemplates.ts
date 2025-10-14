@@ -651,6 +651,24 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
       value: '',
       provision_type: EnvProvisionType.COMPUTED,
     },
+    ETHERSCAN_API_KEY: {
+      name: 'Etherscan API key',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    COINGECKO_API_KEY: {
+      name: 'Coingecko API key',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
+    TRENDMOON_API_KEY: {
+      name: 'Trendmoon API key',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.USER,
+    },
     STAKING_TOKEN_CONTRACT_ADDRESS: {
       name: 'Staking token contract address',
       description: '',
@@ -662,25 +680,6 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
       description: '',
       value: '',
       provision_type: EnvProvisionType.COMPUTED,
-    },
-    // Mindshare-specific environment variables
-    STAKING_AMOUNT: {
-      name: 'Staking Amount',
-      description: 'Amount to stake',
-      value: '',
-      provision_type: EnvProvisionType.USER,
-    },
-    INITIAL_DEPOSIT: {
-      name: 'Initial Deposit',
-      description: 'Initial deposit amount',
-      value: '',
-      provision_type: EnvProvisionType.USER,
-    },
-    NATIVE_TXN_FEES: {
-      name: 'Native Transaction Fees',
-      description: 'Native transaction fees allocation',
-      value: '',
-      provision_type: EnvProvisionType.USER,
     },
     RISK_LEVEL: {
       name: 'Risk Level',

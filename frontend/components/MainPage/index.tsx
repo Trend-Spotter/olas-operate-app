@@ -8,7 +8,6 @@ import { AlertSections } from './sections/AlertSections';
 import { GasBalanceSection } from './sections/GasBalanceSection';
 import { KeepAgentRunningSection } from './sections/KeepAgentRunningSection';
 import { MainOlasBalance } from './sections/OlasBalanceSection';
-import { MindshareSection } from './sections/MindshareSection';
 import { RewardsSection } from './sections/RewardsSection';
 import { StakingContractSection } from './sections/StakingContractUpdate';
 import { SwitchAgentSection } from './sections/SwitchAgentSection';
@@ -27,7 +26,6 @@ export const Main = () => {
         <SwitchAgentSection />
         <MainHeader />
         <AlertSections />
-        <MindshareSection />
         <MainOlasBalance />
         <RewardsSection />
         <KeepAgentRunningSection />
