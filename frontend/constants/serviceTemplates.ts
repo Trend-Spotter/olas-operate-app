@@ -619,7 +619,7 @@ export const OPTIMUS_SERVICE_TEMPLATE: ServiceTemplate = {
 export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
   agentType: AgentType.Mindshare,
   name: 'Mindshare Agent',
-  hash: 'bafybeiacypbthp2uwwc43brpjvd7ier54xnupip4kkd6efaeovfzqgrici',
+  hash: 'bafybeifjowtustmeevbjkerm25xcluoyr7hjqsqq7ykcsdjlsxfdluguzi',
   description: `${KPI_DESC_PREFIX} Mindshare agent for social data trading`,
   image:
     'https://gateway.autonolas.tech/ipfs/bafybeic73qt7npiu55w76q4ipzvqkzfk5rr6sacyqe6crpyip7qddaajtq',
