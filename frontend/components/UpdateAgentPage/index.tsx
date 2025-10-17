@@ -6,9 +6,9 @@ import { LOCAL_FORM_THEME } from '@/theme';
 
 import { AgentsFunUpdateSetup } from './AgentsFunUpdateSetup';
 import { UpdateAgentProvider } from './context/UpdateAgentProvider';
+import { MindshareUpdatePage } from './MindshareUpdateForm';
 import { ModiusUpdatePage } from './ModiusUpdateForm';
 import { OptimusUpdatePage } from './OptimusUpdateForm';
-import { MindshareUpdatePage } from './MindshareUpdateForm';
 
 export const UpdateAgentPage = () => {
   const { selectedAgentType } = useServices();

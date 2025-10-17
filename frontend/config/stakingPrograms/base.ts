@@ -159,7 +159,7 @@ export const BASE_STAKING_PROGRAMS: StakingProgramMap = {
     name: 'Mindshare',
     agentsSupported: [AgentType.Mindshare],
     stakingRequirements: {
-      [TokenSymbol.OLAS]: 100,
+      [TokenSymbol.OLAS]: 20,
     },
     activityChecker:
       BASE_STAKING_PROGRAMS_ACTIVITY_CHECKERS[STAKING_PROGRAM_IDS.Mindshare],

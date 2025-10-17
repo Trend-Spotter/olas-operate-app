@@ -1,7 +1,11 @@
 import { ethers } from 'ethers';
 
 import { MiddlewareChain, ServiceTemplate } from '@/client';
-import { MODE_TOKEN_CONFIG, OPTIMISM_TOKEN_CONFIG } from '@/config/tokens';
+import {
+  BASE_TOKEN_CONFIG,
+  MODE_TOKEN_CONFIG,
+  OPTIMISM_TOKEN_CONFIG,
+} from '@/config/tokens';
 import { EnvProvisionMap as EnvProvisionType } from '@/constants/envVariables';
 import { AgentType } from '@/enums/Agent';
 import { STAKING_PROGRAM_IDS } from '@/enums/StakingProgram';
@@ -615,9 +619,10 @@ export const OPTIMUS_SERVICE_TEMPLATE: ServiceTemplate = {
 export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
   agentType: AgentType.Mindshare,
   name: 'Mindshare Agent',
-  hash: 'bafybeiaxty3e7da5d6wugmnuk5mq55ev4lvxhyoocpvgovjhrwnyoegfra',
+  hash: 'bafybeiacypbthp2uwwc43brpjvd7ier54xnupip4kkd6efaeovfzqgrici',
   description: `${KPI_DESC_PREFIX} Mindshare agent for social data trading`,
-  image: 'https://operate.olas.network/_next/image?url=%2Fimages%2Fprediction-agent.png&w=3840&q=75',
+  image:
+    'https://gateway.autonolas.tech/ipfs/bafybeic73qt7npiu55w76q4ipzvqkzfk5rr6sacyqe6crpyip7qddaajtq',
   service_version: 'v0.1.0',
   agent_release: {
     is_aea: true,
@@ -630,16 +635,20 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
   home_chain: MiddlewareChain.BASE,
   configurations: {
     [MiddlewareChain.BASE]: {
-      staking_program_id: STAKING_PROGRAM_IDS.AgentsFun1,
-      nft: 'bafybeig64atqaladigoc3ds4arltdu63wkdrk3gesjfvnfdmz35amv7faq',
-      rpc: 'http://localhost:8545',
-      agent_id: 14, // placeholder
-      cost_of_bond: +parseEther(0.001),
-      monthly_gas_estimate: +parseEther(10),
+      staking_program_id: STAKING_PROGRAM_IDS.Mindshare, // may be overwritten
+      nft: 'bafybeigszdflje5a6d7x6mqrn66kw2fuqgjg3v5nrq3wncncmtrvyb4nry',
+      rpc: 'http://localhost:8545', // overwritten
+      agent_id: 73,
+      cost_of_bond: +parseEther(20),
+      monthly_gas_estimate: +parseEther(0.011),
       fund_requirements: {
         [ethers.constants.AddressZero]: {
-          agent: +parseEther(2),
-          safe: +parseEther(5),
+          agent: +parseEther(0.0005),
+          safe: 0,
+        },
+        [BASE_TOKEN_CONFIG[TokenSymbol.USDC].address as string]: {
+          agent: 0,
+          safe: +parseUnits(500, BASE_TOKEN_CONFIG[TokenSymbol.USDC].decimals),
         },
       },
     },
@@ -651,19 +660,25 @@ export const MINDSHARE_SERVICE_TEMPLATE: ServiceTemplate = {
       value: '',
       provision_type: EnvProvisionType.COMPUTED,
     },
-    ETHERSCAN_API_KEY: {
+    SAFE_CONTRACT_ADDRESSES: {
+      name: 'Safe contract addresses',
+      description: '',
+      value: '',
+      provision_type: EnvProvisionType.COMPUTED,
+    },
+    CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY: {
       name: 'Etherscan API key',
       description: '',
       value: '',
       provision_type: EnvProvisionType.USER,
     },
-    COINGECKO_API_KEY: {
+    SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY: {
       name: 'Coingecko API key',
       description: '',
       value: '',
       provision_type: EnvProvisionType.USER,
     },
-    TRENDMOON_API_KEY: {
+    SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY: {
       name: 'Trendmoon API key',
       description: '',
       value: '',

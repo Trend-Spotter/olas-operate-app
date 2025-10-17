@@ -1,15 +1,29 @@
-import { Button, Divider, Form, Input, Select, Typography, message } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  message,
+  Select,
+  Typography,
+} from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useUnmount } from 'usehooks-ts';
 
 import { ServiceTemplate } from '@/client';
-import { Pages } from '@/enums/Pages';
+import { COINGECKO_URL, ETHERSCAN_URL, TRENDMOON_URL } from '@/constants/urls';
 import { SetupScreen } from '@/enums/SetupScreen';
-import { usePageState } from '@/hooks/usePageState';
 import { useSetup } from '@/hooks/useSetup';
 import { useStakingProgram } from '@/hooks/useStakingProgram';
 import { onDummyServiceCreation } from '@/utils/service';
 
+import {
+  requiredFieldProps,
+  requiredRules,
+  validateApiKey,
+  validateMessages,
+} from '../../../AgentForms/common/formUtils';
+import { CoinGeckoApiKeyLabel } from '../../../AgentForms/common/labels';
 import {
   MindshareFieldValues,
   useMindshareFormValidate,
@@ -20,63 +34,102 @@ const { Option } = Select;
 
 const SetupHeader = () => (
   <Text>
-    Set up your Mindshare agent configuration. Configure your API keys for Etherscan, 
-    CoinGecko, and Trendmoon services, and set your risk tolerance level.
+    Set up your agent and provide a{' '}
+    <a target="_blank" href={COINGECKO_URL}>
+      CoinGecko API key
+    </a>
+    as a price source, and a{' '}
+    <a target="_blank" href={ETHERSCAN_URL}>
+      Etherscan API key
+    </a>
+    as a blockchain explorer, and a{' '}
+    <a target="_blank" href={TRENDMOON_URL}>
+      Trendmoon API key
+    </a>
+    as a mindshare data source.
   </Text>
 );
 
 type MindshareAgentFormProps = { serviceTemplate: ServiceTemplate };
 
-export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps) => {
+export const MindshareAgentForm = ({
+  serviceTemplate,
+}: MindshareAgentFormProps) => {
   const { goto } = useSetup();
-  const { goto: gotoPage } = usePageState();
   const { defaultStakingProgramId } = useStakingProgram();
-  
+
   const [form] = Form.useForm<MindshareFieldValues>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const {
-    submitButtonText,
-    updateSubmitButtonText,
-    validateForm,
-  } = useMindshareFormValidate();
+  const { submitButtonText, updateSubmitButtonText, validateForm } =
+    useMindshareFormValidate();
 
   const onFinish = useCallback(
     async (values: MindshareFieldValues) => {
+      if (!defaultStakingProgramId) return;
+
       try {
         setIsSubmitting(true);
+
         updateSubmitButtonText('Setting up agent...');
 
-        // Simple validation - just check that all fields have values
-        if (!values.etherscanApiKey?.trim() || !values.coingeckoApiKey?.trim() || 
-            !values.trendmoonApiKey?.trim() || !values.riskLevel) {
-          message.error('Please fill in all fields');
-          return;
-        }
+        const isFormValid = await validateForm(values);
+        if (!isFormValid) return;
 
-        // Brief delay for UX (simulating setup process)
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        message.success('Agent configuration saved');
-        
-        // For Mindshare boilerplate, go directly to the main page
-        gotoPage(Pages.Main);
+        const overriddenServiceConfig: ServiceTemplate = {
+          ...serviceTemplate,
+          env_variables: {
+            ...serviceTemplate.env_variables,
+            CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY: {
+              ...serviceTemplate.env_variables
+                .CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY,
+              value: values.etherscanApiKey,
+            },
+            SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY: {
+              ...serviceTemplate.env_variables
+                .SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY,
+              value: values.coinGeckoApiKey,
+            },
+            SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY: {
+              ...serviceTemplate.env_variables
+                .SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY,
+              value: values.trendmoonApiKey,
+            },
+          },
+        };
+
+        await onDummyServiceCreation(
+          defaultStakingProgramId,
+          overriddenServiceConfig,
+        );
+
+        message.success('Agent setup complete');
+
+        // move to next page
+        goto(SetupScreen.SetupEoaFunding);
       } catch (error) {
         message.error('Something went wrong. Please try again.');
-        console.error('Error with Mindshare form:', error);
+        console.error(error);
       } finally {
         setIsSubmitting(false);
-        updateSubmitButtonText('Next');
+        updateSubmitButtonText('Continue');
       }
     },
-    [gotoPage, updateSubmitButtonText]
+    [
+      defaultStakingProgramId,
+      serviceTemplate,
+      validateForm,
+      updateSubmitButtonText,
+      goto,
+    ],
   );
 
   // Clean up
   useUnmount(async () => {
     setIsSubmitting(false);
-    updateSubmitButtonText('Next');
+    updateSubmitButtonText('Continue');
   });
+
+  const canSubmitForm = isSubmitting || !defaultStakingProgramId;
 
   return (
     <>
@@ -88,33 +141,37 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
         name="setup-mindshare-agent"
         layout="vertical"
         onFinish={onFinish}
-        disabled={isSubmitting}
+        validateMessages={validateMessages}
+        disabled={canSubmitForm}
         initialValues={{
-          riskLevel: 'balanced'
+          riskLevel: 'balanced',
         }}
       >
         <Form.Item
           name="etherscanApiKey"
           label="Etherscan API Key"
-          rules={[{ required: true, message: 'Please enter Etherscan API key' }]}
+          {...requiredFieldProps}
+          rules={[...requiredRules, { validator: validateApiKey }]}
         >
-          <Input placeholder="Enter Etherscan API key" />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item
-          name="coingeckoApiKey"
-          label="CoinGecko API Key"
-          rules={[{ required: true, message: 'Please enter CoinGecko API key' }]}
+          name="coinGeckoApiKey"
+          label={<CoinGeckoApiKeyLabel />}
+          {...requiredFieldProps}
+          rules={[...requiredRules, { validator: validateApiKey }]}
         >
-          <Input placeholder="Enter CoinGecko API key" />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item
           name="trendmoonApiKey"
           label="Trendmoon API Key"
-          rules={[{ required: true, message: 'Please enter Trendmoon API key' }]}
+          {...requiredFieldProps}
+          rules={[...requiredRules, { validator: validateApiKey }]}
         >
-          <Input placeholder="Enter Trendmoon API key" />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item
@@ -124,8 +181,12 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
         >
           <Select placeholder="Select risk level">
             <Option value="balanced">Balanced</Option>
-            <Option value="conservative">Conservative</Option>
-            <Option value="high">High</Option>
+            <Option value="conservative" disabled>
+              Conservative
+            </Option>
+            <Option value="high" disabled>
+              High
+            </Option>
           </Select>
         </Form.Item>
 
@@ -133,10 +194,10 @@ export const MindshareAgentForm = ({ serviceTemplate }: MindshareAgentFormProps)
           <Button
             type="primary"
             htmlType="submit"
+            size="large"
+            block
             loading={isSubmitting}
             disabled={isSubmitting}
-            block
-            size="large"
           >
             {submitButtonText}
           </Button>

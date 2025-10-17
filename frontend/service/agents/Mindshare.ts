@@ -2,9 +2,10 @@ import { ethers } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 
 import { STAKING_PROGRAMS } from '@/config/stakingPrograms';
+import { BASE_STAKING_PROGRAMS } from '@/config/stakingPrograms/base';
 import { PROVIDERS } from '@/constants/providers';
 import { EvmChainId } from '@/enums/Chain';
-import { StakingProgramId } from '@/enums/StakingProgram';
+import { BaseStakingProgramId, StakingProgramId } from '@/enums/StakingProgram';
 import { Address } from '@/types/Address';
 import {
   ServiceStakingDetails,
@@ -173,9 +174,9 @@ export abstract class MindshareService extends StakedAgentService {
   ): Promise<StakingContractDetails | undefined> => {
     const { multicallProvider } = PROVIDERS[chainId];
 
-    const stakingTokenProxy =
-      STAKING_PROGRAMS[chainId]?.[stakingProgramId]?.contract;
-
+    const baseStakingProgram =
+      BASE_STAKING_PROGRAMS[stakingProgramId as BaseStakingProgramId];
+    const stakingTokenProxy = baseStakingProgram?.contract;
     if (!stakingTokenProxy) return;
 
     const contractCalls = [

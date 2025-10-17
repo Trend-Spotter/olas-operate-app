@@ -2,6 +2,7 @@ import { formatUnits } from 'ethers/lib/utils';
 
 import { MiddlewareChain } from '@/client';
 import {
+  MINDSHARE_SERVICE_TEMPLATE,
   MODIUS_SERVICE_TEMPLATE,
   OPTIMUS_SERVICE_TEMPLATE,
 } from '@/constants/serviceTemplates';
@@ -16,7 +17,11 @@ import { PredictTraderService } from '@/service/agents/PredictTrader';
 import { Address } from '@/types/Address';
 import { AgentConfig } from '@/types/Agent';
 
-import { MODE_TOKEN_CONFIG, OPTIMISM_TOKEN_CONFIG } from './tokens';
+import {
+  BASE_TOKEN_CONFIG,
+  MODE_TOKEN_CONFIG,
+  OPTIMISM_TOKEN_CONFIG,
+} from './tokens';
 
 const getModiusUsdcConfig = () => {
   const modiusFundRequirements =
@@ -37,6 +42,17 @@ const getOptimusUsdcConfig = () => {
     optimusFundRequirements?.[optimusUsdcConfig.address as Address]?.safe || 0;
 
   return Number(formatUnits(usdcSafeRequirement, optimusUsdcConfig.decimals));
+};
+
+const getMindshareUsdcConfig = () => {
+  const mindshareFundRequirements =
+    MINDSHARE_SERVICE_TEMPLATE.configurations[MiddlewareChain.BASE]
+      ?.fund_requirements;
+  const mindshareUsdcConfig = BASE_TOKEN_CONFIG[TokenSymbol.USDC];
+  const usdcSafeRequirement =
+    mindshareFundRequirements?.[mindshareUsdcConfig.address as Address]?.safe ||
+    0;
+  return Number(formatUnits(usdcSafeRequirement, mindshareUsdcConfig.decimals));
 };
 
 export const AGENT_CONFIG: {
@@ -107,17 +123,21 @@ export const AGENT_CONFIG: {
       'Autonomously posts to Twitter, creates and trades memecoins, and interacts with other agents. Agent is operating on Base chain.',
     hasExternalFunds: false,
   },
-  [AgentType.Mindshare]: { // COMMENTED OUT FOR TESTING
+  [AgentType.Mindshare]: {
     isAgentEnabled: true,
+    isComingSoon: false,
     requiresSetup: true,
     name: 'Mindshare agent',
     evmHomeChainId: EvmChainId.Base,
     middlewareHomeChainId: MiddlewareChain.BASE,
     requiresAgentSafesOn: [EvmChainId.Base],
+    additionalRequirements: {
+      [EvmChainId.Base]: { [TokenSymbol.USDC]: getMindshareUsdcConfig() },
+    },
     requiresMasterSafesOn: [EvmChainId.Base],
     serviceApi: MindshareService,
     displayName: 'Mindshare agent',
     description: 'Trading agent that uses Mindshare social data from Telegram',
-    hasExternalFunds: false,
+    hasExternalFunds: true,
   },
 };

@@ -11,9 +11,9 @@ import { LOCAL_FORM_THEME } from '@/theme';
 
 import { SetupCreateHeader } from '../Create/SetupCreateHeader';
 import { AgentsFunAgentSetup } from './AgentsFunAgentSetup';
+import { MindshareAgentForm } from './MindshareAgentForm/MindshareAgentForm';
 import { ModiusAgentForm } from './ModiusAgentForm/ModiusAgentForm';
 import { OptimusAgentForm } from './OptimusAgentForm/OptimusAgentForm';
-import { MindshareAgentForm } from './MindshareAgentForm/MindshareAgentForm';
 
 const { Title, Text } = Typography;
 

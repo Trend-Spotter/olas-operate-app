@@ -23,6 +23,8 @@ const BASE_STAKING_PROGRAM_IDS = {
   Mindshare: 'mindshare',
 } as const;
 
+export type BaseStakingProgramId = ValueOf<typeof BASE_STAKING_PROGRAM_IDS>;
+
 const MODE_STAKING_PROGRAM_IDS = {
   ModiusAlpha: 'modius_alpha',
   ModiusAlpha2: 'modius_alpha_2',

@@ -97,6 +97,9 @@ export const BASE_STAKING_PROGRAMS_ACTIVITY_CHECKERS: Record<
   [STAKING_PROGRAM_IDS.AgentsFun3]: getRequesterActivityCheckerContract(
     '0xF0814A105c1b684922Fce8C3b80d7B6Ff1e399F9',
   ),
+  [STAKING_PROGRAM_IDS.Mindshare]: getStakingActivityCheckerContract(
+    '0x133FcEF52285f9A9530A18C6E82c5dd931E175F5',
+  ),
 } as const;
 
 export const MODE_STAKING_PROGRAMS_ACTIVITY_CHECKERS: Record<

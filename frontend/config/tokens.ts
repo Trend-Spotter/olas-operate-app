@@ -82,7 +82,7 @@ const GNOSIS_TOKEN_CONFIG: ChainTokenConfig = {
   },
 } as const;
 
-const BASE_TOKEN_CONFIG: ChainTokenConfig = {
+export const BASE_TOKEN_CONFIG: ChainTokenConfig = {
   [TokenSymbol.ETH]: {
     tokenType: TokenType.NativeGas,
     decimals: 18,
@@ -93,6 +93,12 @@ const BASE_TOKEN_CONFIG: ChainTokenConfig = {
     decimals: 18,
     tokenType: TokenType.Erc20,
     symbol: TokenSymbol.OLAS,
+  },
+  [TokenSymbol.USDC]: {
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    decimals: 6,
+    tokenType: TokenType.Erc20,
+    symbol: TokenSymbol.USDC,
   },
 } as const;
 

@@ -7,6 +7,7 @@ import {
   COINGECKO_URL,
   GEMINI_API_URL,
   TENDERLY_URL,
+  TRENDMOON_URL,
 } from '@/constants/urls';
 
 const { Paragraph, Text } = Typography;
@@ -134,5 +135,22 @@ export const GeminiApiKeyLabel = ({ name }: { name: 'Modius' | 'Optimus' }) => (
     <Text type="secondary" className="text-sm">
       (Optional)
     </Text>
+  </Flex>
+);
+
+export const TrendmoonApiKeyLabel = () => (
+  <Flex align="center" gap={6}>
+    <Text>Trendmoon API key</Text>
+    <InfoTooltip placement="bottom" overlayInnerStyle={TOOLTIP_STYLE}>
+      <Paragraph className="text-sm m-0">
+        The Trendmoon API key allows your agent to fetch real-time social data,
+        ensuring accurate investment calculations. You can generate one for free
+        on{' '}
+        <a target="_blank" rel="noopener noreferrer" href={TRENDMOON_URL}>
+          Trendmoon
+        </a>
+        .
+      </Paragraph>
+    </InfoTooltip>
   </Flex>
 );

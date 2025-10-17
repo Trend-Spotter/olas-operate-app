@@ -1,117 +1,153 @@
-import { Button, Form, Input, Select, Typography } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { get, isEqual, isUndefined, omitBy } from 'lodash';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 
 import { Pages } from '@/enums/Pages';
 import { usePageState } from '@/hooks/usePageState';
 import { useServices } from '@/hooks/useServices';
 import { Nullable } from '@/types/Util';
 
+import {
+  requiredFieldProps,
+  requiredRules,
+  validateApiKey,
+  validateMessages,
+} from '../AgentForms/common/formUtils';
+import {
+  CoinGeckoApiKeyLabel,
+  TrendmoonApiKeyLabel,
+} from '../AgentForms/common/labels';
+import { useMindshareFormValidate } from '../SetupPage/SetupYourAgent/MindshareAgentForm/useMindshareFormValidate';
 import { CardLayout } from './CardLayout';
 import { UpdateAgentContext } from './context/UpdateAgentProvider';
 
-const { Text } = Typography;
 const { Option } = Select;
 
-type MindshareFieldValues = {
-  etherscanApiKey: string;
-  coingeckoApiKey: string;
-  trendmoonApiKey: string;
+type MindshareFormValues = {
+  env_variables: {
+    CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY: string;
+    SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY: string;
+    SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY: string;
+  };
   riskLevel: 'balanced' | 'conservative' | 'high';
 };
 
-const FormHeader = () => (
-  <Text>
-    Update your Mindshare agent configuration. Configure your API keys for Etherscan, 
-    CoinGecko, and Trendmoon services, and set your risk tolerance level.
-  </Text>
-);
+type MindshareUpdateFormProps = {
+  initialFormValues: Nullable<MindshareFormValues>;
+};
+// const FormHeader = () => (
+//   <Text>
+//     Update your Mindshare agent configuration. Configure your API keys for Etherscan,
+//     CoinGecko, and Trendmoon services, and set your risk tolerance level.
+//   </Text>
+// );
 
 const MindshareUpdateForm = ({
   initialFormValues,
-  onSubmit,
-}: {
-  initialFormValues?: Nullable<MindshareFieldValues>;
-  onSubmit: (values: MindshareFieldValues) => Promise<void>;
-}) => {
-  const [form] = Form.useForm<MindshareFieldValues>();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+}: MindshareUpdateFormProps) => {
+  const {
+    isEditing,
+    form,
+    confirmUpdateModal: confirmModal,
+  } = useContext(UpdateAgentContext);
+
+  const { submitButtonText, updateSubmitButtonText, validateForm } =
+    useMindshareFormValidate('Save Changes');
 
   const handleFinish = useCallback(
-    async (values: MindshareFieldValues) => {
-      setIsSubmitting(true);
+    async (values: MindshareFormValues) => {
       try {
-        await onSubmit(values);
+        const envVariables = values.env_variables;
+        const userInputs = {
+          etherscanApiKey:
+            envVariables.CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY,
+          coinGeckoApiKey:
+            envVariables.SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY,
+          trendmoonApiKey:
+            envVariables.SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY,
+          riskLevel: values.riskLevel,
+        };
+        const isFormValid = await validateForm(userInputs);
+        if (!isFormValid) return;
+
+        updateSubmitButtonText('Updating agent...');
+        confirmModal.openModal();
+      } catch (error) {
+        console.error('Error validating form:', error);
       } finally {
-        setIsSubmitting(false);
+        updateSubmitButtonText('Save Changes');
       }
     },
-    [onSubmit],
+    [validateForm, confirmModal, updateSubmitButtonText],
   );
 
   return (
-    <>
-      <FormHeader />
-      
-      <Form<MindshareFieldValues>
-        form={form}
-        name="update-mindshare-agent"
-        layout="vertical"
-        onFinish={handleFinish}
-        disabled={isSubmitting}
-        initialValues={initialFormValues || undefined}
-        style={{ marginTop: 16 }}
+    <Form<MindshareFormValues>
+      form={form}
+      layout="vertical"
+      disabled={!isEditing}
+      onFinish={handleFinish}
+      validateMessages={validateMessages}
+      initialValues={{ ...initialFormValues }}
+    >
+      <Form.Item
+        label="Etherscan API Key"
+        name={[
+          'env_variables',
+          'CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY',
+        ]}
+        {...requiredFieldProps}
+        rules={[...requiredRules, { validator: validateApiKey }]}
       >
-        <Form.Item
-          name="etherscanApiKey"
-          label="Etherscan API Key"
-          rules={[{ required: true, message: 'Please enter Etherscan API key' }]}
-        >
-          <Input placeholder="Enter Etherscan API key" />
-        </Form.Item>
+        <Input.Password />
+      </Form.Item>
 
-        <Form.Item
-          name="coingeckoApiKey"
-          label="CoinGecko API Key"
-          rules={[{ required: true, message: 'Please enter CoinGecko API key' }]}
-        >
-          <Input placeholder="Enter CoinGecko API key" />
-        </Form.Item>
+      <Form.Item
+        label={<CoinGeckoApiKeyLabel />}
+        name={[
+          'env_variables',
+          'SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY',
+        ]}
+        {...requiredFieldProps}
+        rules={[...requiredRules, { validator: validateApiKey }]}
+      >
+        <Input.Password />
+      </Form.Item>
 
-        <Form.Item
-          name="trendmoonApiKey"
-          label="Trendmoon API Key"
-          rules={[{ required: true, message: 'Please enter Trendmoon API key' }]}
-        >
-          <Input placeholder="Enter Trendmoon API key" />
-        </Form.Item>
+      <Form.Item
+        label={<TrendmoonApiKeyLabel />}
+        name={[
+          'env_variables',
+          'SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY',
+        ]}
+        {...requiredFieldProps}
+        rules={[...requiredRules, { validator: validateApiKey }]}
+      >
+        <Input.Password />
+      </Form.Item>
 
-        <Form.Item
-          name="riskLevel"
-          label="Risk Level"
-          rules={[{ required: true, message: 'Please select a risk level' }]}
-        >
-          <Select placeholder="Select risk level">
-            <Option value="balanced">Balanced</Option>
-            <Option value="conservative">Conservative</Option>
-            <Option value="high">High</Option>
-          </Select>
-        </Form.Item>
+      <Form.Item
+        name="riskLevel"
+        label="Risk Level"
+        rules={[{ required: true, message: 'Please select a risk level' }]}
+      >
+        <Select placeholder="Select risk level">
+          <Option value="balanced">Balanced</Option>
+          <Option value="conservative" disabled>
+            Conservative
+          </Option>
+          <Option value="high" disabled>
+            High
+          </Option>
+        </Select>
+      </Form.Item>
 
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-            block
-            size="large"
-          >
-            Update Agent
-          </Button>
-        </Form.Item>
-      </Form>
-    </>
+      <Form.Item hidden={!isEditing}>
+        <Button size="large" type="primary" htmlType="submit" block>
+          {submitButtonText}
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
@@ -123,36 +159,40 @@ export const MindshareUpdatePage = () => {
   const { selectedService } = useServices();
   const { unsavedModal, form } = useContext(UpdateAgentContext);
 
-  const initialValues = useMemo<Nullable<MindshareFieldValues>>(() => {
+  const initialValues = useMemo<Nullable<MindshareFormValues>>(() => {
     if (!selectedService?.env_variables) return null;
 
     const envEntries = Object.entries(selectedService.env_variables);
 
     return envEntries.reduce(
       (acc, [key, { value }]) => {
-        if (key === 'ETHERSCAN_API_KEY') {
-          acc.etherscanApiKey = value;
-        } else if (key === 'COINGECKO_API_KEY') {
-          acc.coingeckoApiKey = value;
-        } else if (key === 'TRENDMOON_API_KEY') {
-          acc.trendmoonApiKey = value;
-        } else if (key === 'RISK_LEVEL') {
-          acc.riskLevel = value as 'balanced' | 'conservative' | 'high';
+        if (key === 'CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY') {
+          acc.env_variables.CONNECTION_DCXT_CONFIG_EXCHANGES_0_ETHERSCAN_API_KEY =
+            value;
+        } else if (
+          key === 'SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY'
+        ) {
+          acc.env_variables.SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_COINGECKO_API_KEY =
+            value;
+        } else if (
+          key === 'SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY'
+        ) {
+          acc.env_variables.SKILL_MINDSHARE_APP_MODELS_PARAMS_ARGS_TRENDMOON_API_KEY =
+            value;
         }
-
         return acc;
       },
-      {} as MindshareFieldValues,
+      { env_variables: {} } as MindshareFormValues,
     );
   }, [selectedService?.env_variables]);
 
   const handleBackClick = useCallback(() => {
     // Check if there are unsaved changes and omit empty fields
     const unsavedFields = omitBy(
-      form?.getFieldsValue(),
+      get(form?.getFieldsValue(), 'env_variables'),
       (value) => isUndefined(value),
     );
-    const previousValues = initialValues;
+    const previousValues = initialValues?.env_variables;
 
     const hasUnsavedChanges = !isEqual(unsavedFields, previousValues);
     if (hasUnsavedChanges) {
@@ -162,18 +202,9 @@ export const MindshareUpdatePage = () => {
     }
   }, [initialValues, form, unsavedModal, goto]);
 
-  const handleSubmit = useCallback(async (values: MindshareFieldValues) => {
-    // This would typically update the service configuration
-    // For now, just a placeholder implementation
-    console.log('Updating Mindshare agent with values:', values);
-  }, []);
-
   return (
     <CardLayout onClickBack={handleBackClick}>
-      <MindshareUpdateForm 
-        initialFormValues={initialValues} 
-        onSubmit={handleSubmit}
-      />
+      <MindshareUpdateForm initialFormValues={initialValues} />
     </CardLayout>
   );
 };
