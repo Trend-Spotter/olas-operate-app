@@ -107,7 +107,7 @@ export const AGENT_CONFIG: {
       'Autonomously posts to Twitter, creates and trades memecoins, and interacts with other agents. Agent is operating on Base chain.',
     hasExternalFunds: false,
   },
-  [AgentType.Mindshare]: { // COMMENTED OUT FOR TESTING
+  [AgentType.Mindshare]: {
     isAgentEnabled: true,
     requiresSetup: true,
     name: 'Mindshare agent',
